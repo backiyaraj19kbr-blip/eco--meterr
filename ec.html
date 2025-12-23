@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Eco-Meter 🌍</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #00c853, #1de9b6);
+  color: #fff;
+}
+
+header {
+  text-align: center;
+  padding: 30px;
+  background: rgba(0,0,0,0.2);
+}
+
+header h1 {
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+header p {
+  font-size: 18px;
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 30px;
+}
+
+.card {
+  background: #ffffff;
+  color: #333;
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.card h2 {
+  color: #00a152;
+}
+
+.inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+input {
+  padding: 15px;
+  font-size: 16px;
+  border-radius: 12px;
+  border: 2px solid #1de9b6;
+}
+
+button {
+  margin-top: 20px;
+  padding: 15px;
+  font-size: 18px;
+  border: none;
+  border-radius: 30px;
+  background: linear-gradient(90deg, #00c853, #1de9b6);
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+.results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+  gap: 20px;
+}
+
+.result-box {
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.badge {
+  font-size: 30px;
+  margin-top: 10px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background: rgba(0,0,0,0.2);
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🌍 Eco-Meter</h1>
+  <p>Track Your Electricity • Save Money • Protect Nature</p>
+</header>
+
+<div class="container">
+
+  <!-- INPUT CARD -->
+  <div class="card">
+    <h2>⚡ Enter Your Electricity Bill</h2>
+    <div class="inputs">
+      <input type="number" id="units" placeholder="Units Consumed (kWh)">
+      <input type="number" id="bill" placeholder="Bill Amount (₹)">
+    </div>
+    <button onclick="calculate()">Calculate Impact 🌱</button>
+  </div>
+
+  <!-- OUTPUT CARD -->
+  <div class="card">
+    <h2>📊 Your Environmental Impact</h2>
+    <div class="results">
+      <div class="result-box">
+        🌫️ Carbon Emission  
+        <div id="carbon">-- kg CO₂</div>
+      </div>
+
+      <div class="result-box">
+        🌳 Trees Required  
+        <div id="trees">-- trees</div>
+      </div>
+
+      <div class="result-box">
+        💰 Possible Savings  
+        <div id="savings">₹ --</div>
+      </div>
+
+      <div class="result-box">
+        🏅 Green Status  
+        <div id="badge" class="badge">--</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WOW FACTOR -->
+  <div class="card">
+    <h2>❄️ Appliance Guesser</h2>
+    <p>If you use an AC, it may consume nearly <b>40% of your electricity</b>.</p>
+    <canvas id="pieChart"></canvas>
+  </div>
+
+</div>
+
+<footer>
+  Eco-Meter © IDT Project | Designed for Sustainable Living 🌱
+</footer>
+
+<script>
+function calculate() {
+  let units = document.getElementById("units").value;
+  let bill = document.getElementById("bill").value;
+
+  if (units === "" || bill === "") {
+    alert("Please enter all values");
+    return;
+  }
+
+  // Core Logic
+  let carbon = units * 0.82;
+  let trees = carbon / 20;
+  let savings = bill * 0.10;
+
+  document.getElementById("carbon").innerText = carbon.toFixed(1) + " kg CO₂";
+  document.getElementById("trees").innerText = Math.ceil(trees) + " trees";
+  document.getElementById("savings").innerText = "₹ " + savings.toFixed(0);
+
+  // Badge System
+  let badge = document.getElementById("badge");
+  if (carbon < 100) {
+    badge.innerText = "🟢 Green Badge";
+  } else {
+    badge.innerText = "🔴 Red Alert";
+  }
+
+  // Pie Chart
+  new Chart(document.getElementById("pieChart"), {
+    type: 'pie',
+    data: {
+      labels: ['AC Usage', 'Other Appliances'],
+      datasets: [{
+        data: [40, 60],
+        backgroundColor: ['#ff5252', '#69f0ae']
+      }]
+    }
+  });
+}
+</script>
+
+</body>
+</html>
